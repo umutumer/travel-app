@@ -90,9 +90,9 @@ const Header = () => {
         </nav>
         <div className="flex items-center gap-4">
           <SearchComp />
-          <div className="p-3 flex bg-orange-500 cursor-pointer text-white rounded-full">
+          <Link href={'/login'} className="p-3 flex bg-orange-500 cursor-pointer text-white rounded-full">
             <User size={16} />
-          </div>
+          </Link>
           <MobileMenu />
         </div>
       </div>
