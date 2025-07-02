@@ -35,7 +35,8 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 const RegisterForm = () => {
   const router = useRouter();
   const { setDirection } = usePageDirection();
-  const [error, setError] = React.useState("");
+  const [error, setError] = React.useState<string>("");
+  const [success,setSuccess] = React.useState<string>("");
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -49,8 +50,30 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
+    setError("");
     console.log("Register:", data);
-    router.push("/login");
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        const result = text ? JSON.parse(text) : {};
+        setError(result.message || "Registration Failed");
+      }
+      if (response.ok) {
+        setSuccess("Success");
+        setTimeout(() => {
+          router.push("/login");
+        },2000)
+      } 
+    } catch (error) {
+      console.error(error);    
+    }
   };
 
   const handleGoLogin = () => {
@@ -89,6 +112,7 @@ const RegisterForm = () => {
           </h1>
 
           {error && <p className="text-red-500 mb-4">{error}</p>}
+          {success && <p className="text-green-500 mb-4">{success}</p>}
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
