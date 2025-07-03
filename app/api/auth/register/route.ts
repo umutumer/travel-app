@@ -49,7 +49,6 @@ export async function POST(request: NextRequest) {
         }
     });
     return NextResponse.json(user|| {},{status:201})
-    return user;
   } catch (error) {
     return NextResponse.json(
         {message: "Someting went wrong"},

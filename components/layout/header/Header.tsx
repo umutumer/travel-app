@@ -14,6 +14,7 @@ import MobileMenu from "./MobileMenu";
 import { navigationLinks } from "@/constans";
 import SearchComp from "./Search";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 const Header = () => {
   const socialLinks = [
     {
@@ -33,7 +34,7 @@ const Header = () => {
     },
   ];
   const pathName = usePathname();
-  
+  const { data: session, status } = useSession();
 
   return (
     <header className="bg-black text-white">
@@ -70,19 +71,25 @@ const Header = () => {
       </div>
       {/* Navigation Bar */}
       <div className="bg-white text-black h28 shadow-md flex items-center justify-between p-4">
-        <Image
-          src={TravelLogo}
-          width={210}
-          height={50}
-          alt="travel-logo"
-          className="w-36 lg:w-52 h-auto"
-        />
+        <Link href={'/'}>
+          <Image
+            src={TravelLogo}
+            width={210}
+            height={50}
+            alt="travel-logo"
+            className="w-36 lg:w-52 h-auto"
+          />
+        </Link>
         <nav className="hidden md:flex gap-4 text-lg font-semibold">
           {navigationLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className={pathName === link.href ? "text-orange-500" : "hover:text-orange-500 transition-colors"}
+              className={
+                pathName === link.href
+                  ? "text-orange-500"
+                  : "hover:text-orange-500 transition-colors"
+              }
             >
               {link.name}
             </Link>
@@ -90,9 +97,34 @@ const Header = () => {
         </nav>
         <div className="flex items-center gap-4">
           <SearchComp />
-          <Link href={'/login'} className="p-3 flex bg-orange-500 cursor-pointer text-white rounded-full">
-            <User size={16} />
-          </Link>
+          {session ? (
+            <Link
+              href={"/profile"}
+              className="p-3 bg-orange-200 flex items-center justify-center text-orange-600 text-sm font-extrabold rounded-full"
+            >
+              {session.user.image ? (
+                <Image
+                  alt="user-image"
+                  width={160}
+                  height={160}
+                  src={session.user.image}
+                  className="w-full h-full rounded-full object-cover"
+                />
+              ) : (
+                <p className="flex">
+                  {session.user.firstName?.[0]}
+                  {session.user.lastName?.[0]}
+                </p>
+              )}
+            </Link>
+          ) : (
+            <Link
+              href={"/login"}
+              className="p-3 flex bg-orange-500 cursor-pointer text-white rounded-full"
+            >
+              <User size={16} />
+            </Link>
+          )}
           <MobileMenu />
         </div>
       </div>

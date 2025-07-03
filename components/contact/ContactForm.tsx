@@ -46,7 +46,7 @@ const ContactForm = () => {
     },
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("Form submitted:", values);
+    
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -58,7 +58,7 @@ const ContactForm = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Form submission result:", result);
+        
         form.reset();
       }
     } catch (error) {

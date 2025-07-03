@@ -5,7 +5,7 @@ import { prismadb } from "@/lib/db";
 import type { SessionStrategy } from "next-auth";
 import type { AuthOptions, Session, User } from "next-auth";
 import type { JWT } from "next-auth/jwt";
-export const authOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -65,7 +65,7 @@ export const authOptions = {
   pages: {
     signIn: "/login",
   },
-  session: { strategy: "jwt" as SessionStrategy },
+  session: { strategy: "jwt" as SessionStrategy, maxAge: 60 * 60 * 24 * 7 },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
