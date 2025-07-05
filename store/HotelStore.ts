@@ -30,7 +30,7 @@ export const useHotelStore = create<HotelState>((set) => ({
         set({ hotels: data, loading: false });
       }
     } catch (error) {
-      console.error("Error fetching hotels:", error);
+      
       set({ error: true, loading: false });
     }
   },

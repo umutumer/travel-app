@@ -72,7 +72,7 @@ const RegisterForm = () => {
         },2000)
       } 
     } catch (error) {
-      console.error(error);    
+      
     }
   };
 

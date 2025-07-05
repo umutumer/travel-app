@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(hotels);
   } catch (error) {
-    console.error("Error fetching hotels:", error);
+    
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
